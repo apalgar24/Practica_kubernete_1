@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mariadb
+  labels:
+    app: mariadb
+    tier: backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mariadb
+      tier: backend
+  template:
+    metadata:
+      labels:
+        app: mariadb
+        tier: backend
+    spec:
+      volumes:
+        - name: volumen-mariadb
+          persistentVolumeClaim:
+            claimName: pvc-bookmedik
+      containers:
+        - name: contenedor-mariadb
+          image: mariadb
+          env:
+            - name: MARIADB_ROOT_PASSWORD
+              value: root
+            - name: MARIADB_DATABASE
+              value: bookmedik
+            - name: MARIADB_USER
+              value: bookmedik
+            - name: MARIADB_PASSWORD
+              value: bookmedik
+          ports:
+            - name: mariadb-server
+              containerPort: 3306
+          volumeMounts:
+            - mountPath: "/var/lib/mysql"
+              name: volumen-mariadb

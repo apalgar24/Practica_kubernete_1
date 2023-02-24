@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bookmedik
+  labels:
+    app: bookmedik
+    tier: frontend
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: bookmedik
+      tier: frontend
+  template:
+    metadata:
+      labels:
+        app: bookmedik
+        tier: frontend
+    spec:
+      containers:
+      - name: contenedor-bookmedik
+        image: adpalgar24/bookmedik:v3_2
+        env:
+          - name: USUARIO_BOOKMEDIK
+            value: bookmedik
+          - name: CONTRA_BOOKMEDIK
+            value: bookmedik
+          - name: DATABASE_HOST
+            value: mariadb-service
+          - name: NOMBRE_DB
+            value: bookmedik
+        ports:
+          - name: http-server
+            containerPort: 80
